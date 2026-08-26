@@ -16,11 +16,11 @@ pipeline {
 
         stage('Test') {
             steps {
-                sh 'mvn -B test'
+                sh 'docker run --rm -v "$WORKSPACE:/src" -w /src maven:3.9-eclipse-temurin-21 mvn -B test'
             }
             post {
                 always {
-                    junit '**/target/surefire-reports/*.xml'
+                    junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
                 }
             }
         }
